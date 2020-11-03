@@ -1,0 +1,39 @@
+{
+	"typeAcquisition": { "enable": true },
+	"compilerOptions": {
+		"rootDir": ".",
+		"outDir": "dist",
+		"baseUrl": ".",
+		"paths": {
+			"@nrcs/*": ["packages/*/src"]
+		},
+		"target": "es5",
+		"module": "ESNext",
+		"lib": ["dom", "dom.iterable", "es2015"],
+		"downlevelIteration": true,
+		"composite": true,
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"allowJs": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"allowSyntheticDefaultImports": true,
+		// Modules should be [strict: true] by default. Some modules,
+		// notably resourceinventory, temporarily override specific
+		// strictness rules in their own tsconfig.json settings.
+		// We should aim for all modules to adhere to all strictness
+		// rules.
+		// See: https://www.typescriptlang.org/tsconfig#strict
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "node",
+		"noFallthroughCasesInSwitch": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "react",
+		"noEmitOnError": true
+	}
+}

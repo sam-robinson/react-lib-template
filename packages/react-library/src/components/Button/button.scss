@@ -1,0 +1,8 @@
+@import "colors";
+
+.test-button {
+	background-color: yellow;
+	&:focus {
+		background-color: red;
+	}
+}

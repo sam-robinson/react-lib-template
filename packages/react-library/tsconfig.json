@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"include": ["src"],
+	"compilerOptions": {
+		"outDir": "dist",
+		"rootDir": "src",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		},
+		// Temporarily override strictness rules.
+		// TODO: remove this setting and avoid implicit any throughout the codebase.
+		"strictNullChecks": false,
+		"noImplicitAny": false
+	}
+}
