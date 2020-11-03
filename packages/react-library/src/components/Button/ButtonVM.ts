@@ -6,4 +6,9 @@ export class ButtonVM {
 	@action.bound handleClick() {
 		this.clickCount++;
 	}
+
+	// test compilation of loading .json modules
+	async loadData() {
+		return (await import("./api/data.json")).default;
+	}
 }

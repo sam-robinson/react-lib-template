@@ -21,13 +21,7 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"allowSyntheticDefaultImports": true,
-		// Modules should be [strict: true] by default. Some modules,
-		// notably resourceinventory, temporarily override specific
-		// strictness rules in their own tsconfig.json settings.
-		// We should aim for all modules to adhere to all strictness
-		// rules.
-		// See: https://www.typescriptlang.org/tsconfig#strict
-		"strict": true,
+		"strict": true, // See: https://www.typescriptlang.org/tsconfig#strict
 		"forceConsistentCasingInFileNames": true,
 		"moduleResolution": "node",
 		"noFallthroughCasesInSwitch": true,
