@@ -6,8 +6,8 @@
 	"scripts": {
 		"build": "node ../../scripts/build.js",
 		"test": "node ../../scripts/test.js",
-		"storybook": "start-storybook -p 6006 --no-dll",
-		"build-storybook": "build-storybook --no-dll"
+		"storybook": "node ../../scripts/checkname.js&&start-storybook -p 6006 --no-dll",
+		"build-storybook": "node ../../scripts/checkname.js&&build-storybook --no-dll"
 	},
 	"dependencies": {
 		"mobx": "^4.15.7",
