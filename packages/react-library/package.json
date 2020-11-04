@@ -32,6 +32,18 @@
 	"jest": {
 		"setupFilesAfterEnv": [
 			"./setupTests.js"
+		],
+		"moduleNameMapper": {
+			"^@[/](.+)": "<rootDir>/src/$1"
+		},
+		"automock": false,
+		"reporters": [
+			"default",
+			"jest-junit"
 		]
+	},
+	"jest-junit": {
+		"suiteName": "jest tests",
+		"outputName": "junit-test-report.xml"
 	}
 }
