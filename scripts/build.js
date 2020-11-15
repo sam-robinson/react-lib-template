@@ -39,8 +39,6 @@ const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 const isInteractive = process.stdout.isTTY;
 
-const appPackageJson = require(paths.appPackageJson);
-
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appIndexJs])) {
 	process.exit(1);
@@ -53,8 +51,10 @@ const writeStatsJson = argv.indexOf("--stats") !== -1;
 const appConfig = fs.existsSync(paths.appConfig) ? require(paths.appConfig) : {};
 const config = merge(configFactory("production"), appConfig);
 
-const packageName = path.basename(paths.appPath).trim();
+const appPackageJson = require(paths.appPackageJson);
+const packageName = paths.packageName;
 
+/*
 if (packageName === "react-library") {
 	console.log(
 		chalk.red(`Package directory name "react-library" is invalid - rename before building.`)
@@ -76,6 +76,7 @@ if (appPackageJson.name !== `@nrcs/${packageName}`) {
 	console.log();
 	process.exit(1);
 }
+*/
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.

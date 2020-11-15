@@ -24,3 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 
 *junit-test-report.xml
+*.tsbuildinfo
+
+.editorconfig
+.local

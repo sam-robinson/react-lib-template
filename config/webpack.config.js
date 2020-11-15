@@ -146,7 +146,7 @@ module.exports = function (webpackEnv) {
 		return loaders;
 	};
 
-	const packageName = path.basename(paths.appPath);
+	const packageName = paths.packageName;
 
 	return {
 		mode: isEnvProduction ? "production" : isEnvDevelopment && "development",
@@ -163,31 +163,33 @@ module.exports = function (webpackEnv) {
 		// "web" | "webworker" | "node" | "async-node" | "node-webkit" | "electron-main" | "electron-renderer" | "electron-preload" | function
 		target: "web",
 
-		entry:
-			isEnvDevelopment && !shouldUseReactRefresh
-				? [
-						// Include an alternative client for WebpackDevServer. A client's job is to
-						// connect to WebpackDevServer by a socket and get notified about changes.
-						// When you save a file, the client will either apply hot updates (in case
-						// of CSS changes), or refresh the page (in case of JS changes). When you
-						// make a syntax error, this client will display a syntax error overlay.
-						// Note: instead of the default WebpackDevServer client, we use a custom one
-						// to bring better experience for Create React App users. You can replace
-						// the line below with these two lines if you prefer the stock client:
-						//
-						// require.resolve('webpack-dev-server/client') + '?/',
-						// require.resolve('webpack/hot/dev-server'),
-						//
-						// When using the experimental react-refresh integration,
-						// the webpack plugin takes care of injecting the dev client for us.
-						webpackDevClientEntry,
-						// Finally, this is your app's code:
-						paths.appIndexJs,
-						// We include the app code last so that if there is a runtime error during
-						// initialization, it doesn't blow up the WebpackDevServer client, and
-						// changing JS code would still trigger a refresh.
-				  ]
-				: paths.appIndexJs,
+		entry: {
+			[packageName]:
+				isEnvDevelopment && !shouldUseReactRefresh
+					? [
+							// Include an alternative client for WebpackDevServer. A client's job is to
+							// connect to WebpackDevServer by a socket and get notified about changes.
+							// When you save a file, the client will either apply hot updates (in case
+							// of CSS changes), or refresh the page (in case of JS changes). When you
+							// make a syntax error, this client will display a syntax error overlay.
+							// Note: instead of the default WebpackDevServer client, we use a custom one
+							// to bring better experience for Create React App users. You can replace
+							// the line below with these two lines if you prefer the stock client:
+							//
+							// require.resolve('webpack-dev-server/client') + '?/',
+							// require.resolve('webpack/hot/dev-server'),
+							//
+							// When using the experimental react-refresh integration,
+							// the webpack plugin takes care of injecting the dev client for us.
+							webpackDevClientEntry,
+							// Finally, this is your app's code:
+							paths.appIndexJs,
+							// We include the app code last so that if there is a runtime error during
+							// initialization, it doesn't blow up the WebpackDevServer client, and
+							// changing JS code would still trigger a refresh.
+					  ]
+					: paths.appIndexJs,
+		},
 		output: {
 			// The build folder.
 			path: isEnvProduction ? paths.appBuild : undefined,
@@ -226,13 +228,15 @@ module.exports = function (webpackEnv) {
 
 			// Prevents conflicts when multiple webpack runtimes (from different apps)
 			// are used on the same page.
-			jsonpFunction: `webpackJsonp${appPackageJson.name}`,
+			//jsonpFunction: `webpackJsonp${appPackageJson.name}`,
 			//this defaults to 'window', but by setting it to 'this' then
 			// module chunks which are built will work in web workers as well.
 			//globalObject: "this",
 
-			// don't include the library name - doesn't work with dojo
-			// library: packageName,
+			// use cdsimodules if libraryTarget is "this"
+			//globalObject: "cdsimodules",
+
+			//library: packageName,
 			libraryTarget: "umd",
 		},
 
@@ -304,10 +308,14 @@ module.exports = function (webpackEnv) {
 			// Automatically split vendor and commons
 			// https://twitter.com/wSokra/status/969633336732905474
 			// https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
+
+			/* don't split chunks (for now)
 			splitChunks: {
 				chunks: "all",
 				name: false,
 			},
+			*/
+
 			// Keep the runtime chunk separated to enable long term caching
 			// https://twitter.com/wSokra/status/969679223278505985
 			// https://github.com/facebook/create-react-app/issues/5358
@@ -359,7 +367,7 @@ module.exports = function (webpackEnv) {
 				// To fix this, we prevent you from importing files out of src/ -- if you'd like to,
 				// please link the files into your node_modules/ and let module-resolution kick in.
 				// Make sure your source files are compiled, as they will not be processed in any way.
-				new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson, reactRefreshOverlayEntry]),
+				//new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson, reactRefreshOverlayEntry]),
 			],
 		},
 		resolveLoader: {
@@ -436,7 +444,39 @@ module.exports = function (webpackEnv) {
 							},
 						},
 						// Process any JS outside of the app with Babel.
+						{
+							test: /\.(js|mjs|jsx|ts|tsx)$/,
+							exclude: /@babel(?:\/|\\{1,2})runtime/,
+							loader: require.resolve("babel-loader"),
+							options: {
+								customize: require.resolve("babel-preset-react-app/webpack-overrides"),
+
+								plugins: [
+									[
+										require.resolve("babel-plugin-named-asset-import"),
+										{
+											loaderMap: {
+												svg: {
+													ReactComponent: "@svgr/webpack?-svgo,+titleProp,+ref![path]",
+												},
+											},
+										},
+									],
+									isEnvDevelopment &&
+										shouldUseReactRefresh &&
+										require.resolve("react-refresh/babel"),
+								].filter(Boolean),
+								// This is a feature of `babel-loader` for webpack (not Babel itself).
+								// It enables caching results in ./node_modules/.cache/babel-loader/
+								// directory for faster rebuilds.
+								cacheDirectory: true,
+								// See #6846 for context on why cacheCompression is disabled
+								cacheCompression: false,
+								compact: isEnvProduction,
+							},
+						},
 						// Unlike the application JS, we only compile the standard ES features.
+						/*
 						{
 							test: /\.(js|mjs)$/,
 							exclude: /@babel(?:\/|\\{1,2})runtime/,
@@ -459,6 +499,7 @@ module.exports = function (webpackEnv) {
 								inputSourceMap: shouldUseSourceMap,
 							},
 						},
+						*/
 						// "postcss" loader applies autoprefixer to our CSS.
 						// "css" loader resolves paths in CSS and adds assets as dependencies.
 						// "style" loader turns CSS into JS modules that inject <style> tags.
@@ -652,7 +693,9 @@ module.exports = function (webpackEnv) {
 						manifest[file.name] = file.path;
 						return manifest;
 					}, seed);
-					const entrypointFiles = entrypoints.main.filter((fileName) => !fileName.endsWith(".map"));
+					const entrypointFiles = entrypoints[packageName].filter(
+						(fileName) => !fileName.endsWith(".map")
+					);
 
 					return {
 						files: manifestFiles,
