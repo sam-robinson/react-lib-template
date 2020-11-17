@@ -3,4 +3,6 @@
 //		2) update package.json dependencies to point to the actual library name ("@nrcs/<library name here>": "*")
 //		3) update tsconfig.json to point to the actual library name
 //		4) export items required for runtime from the library project (functions, classes, scss, etc)
-export {};
+
+export * from "@nrcs/react-library";
+export * from "@/scss/index.scss";

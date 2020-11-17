@@ -1,11 +1,10 @@
 {
-	"name": "@nrcs/enveval-runtime",
+	"name": "@nrcs/react-library-runtime",
 	"description": "",
 	"version": "1.0.0",
 	"license": "UNLICENSED",
 	"main": "src/index.ts",
 	"scripts": {
-		"build-relink": "node .relink.js&&node ../../scripts/build.js",
 		"build": "node ../../scripts/build.js",
 		"test": "node ../../scripts/noop.js"
 	},
