@@ -10,6 +10,10 @@
 		"prebuild": "npm run init-yarn&&yarn run clean",
 		"build": "cross-env NODE_ENV=production yarn workspaces run build",
 		"build-dev": "cross-env NODE_ENV=development yarn workspaces run build",
-		"test": "npm run init-yarn&&yarn workspaces run test"
+		"test": "npm run init-yarn&&yarn workspaces run test",
+		"storybook": "yarn workspace @nrcs/react-library storybook"
+	},
+	"dependencies": {
+		"yarn": "^1.22.10"
 	}
 }
