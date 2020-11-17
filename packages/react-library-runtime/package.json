@@ -1,0 +1,41 @@
+{
+	"name": "@nrcs/enveval-runtime",
+	"description": "",
+	"version": "1.0.0",
+	"license": "UNLICENSED",
+	"main": "src/index.ts",
+	"scripts": {
+		"build-relink": "node .relink.js&&node ../../scripts/build.js",
+		"build": "node ../../scripts/build.js",
+		"test": "node ../../scripts/noop.js"
+	},
+	"dependencies": {
+		"@nrcs/react-library": "*"
+	},
+	"devDependencies": {
+		"typescript": "^4.0.3"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all",
+			"ie 11"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version",
+			"ie 11"
+		]
+	},
+	"jest": {
+		"setupFilesAfterEnv": [
+			"./setupTests.js"
+		],
+		"moduleNameMapper": {
+			"^@[/](.+)": "<rootDir>/src/$1"
+		},
+		"automock": false
+	}
+}

@@ -54,8 +54,17 @@ const config = merge(configFactory("production"), appConfig);
 const appPackageJson = require(paths.appPackageJson);
 const packageName = paths.packageName;
 
-/*
 if (packageName === "react-library") {
+	console.log(
+		chalk.red(`Package directory name "react-library" is invalid - rename before building.`)
+	);
+	console.log("  package path: " + chalk.cyan(`${paths.appPath}`));
+	console.log();
+	console.log();
+	process.exit(1);
+}
+
+if (packageName === "react-library-runtime") {
 	console.log(
 		chalk.red(`Package directory name "react-library" is invalid - rename before building.`)
 	);
@@ -76,7 +85,6 @@ if (appPackageJson.name !== `@nrcs/${packageName}`) {
 	console.log();
 	process.exit(1);
 }
-*/
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.

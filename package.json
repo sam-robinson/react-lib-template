@@ -11,8 +11,5 @@
 		"build": "cross-env NODE_ENV=production yarn workspaces run build",
 		"build-dev": "cross-env NODE_ENV=development yarn workspaces run build",
 		"test": "npm run init-yarn&&yarn workspaces run test"
-	},
-	"dependencies": {
-		"yarn": "^1.22.10"
 	}
 }

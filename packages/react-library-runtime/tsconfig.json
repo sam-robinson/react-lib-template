@@ -1,0 +1,13 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"include": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.jsx", "src/**/*.js", "src/**/*.json"],
+	"compilerOptions": {
+		"outDir": "dist",
+		"rootDir": "src",
+		"baseUrl": ".",
+		"paths": {
+			// TODO: update "react-library" to the actual library name
+			"@/*": ["../react-library/src/*"]
+		}
+	}
+}
